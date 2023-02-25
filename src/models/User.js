@@ -8,7 +8,11 @@ class User {
     this.username = null;
     this.token = null;
     this.status = null;
+    this.password = null;
+    this.creation_date = null;
+    this.birthday = null;
     Object.assign(this, data);
   }
+
 }
 export default User;

@@ -7,13 +7,21 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
 
-const Player = ({user}) => (
+const Player = ({user}) => {
+    const history = useHistory();
+    const OpenProfile = () => {
+        history.push('/game/profile/' + user.id);
+    }
+    return (
   <div className="player container">
-    <div className="player username">{user.username}</div>
-    <div className="player name">{user.name}</div>
-    <div className="player id">id: {user.id}</div>
+      <div>
+          <button className="player username" onClick={OpenProfile}> {user.username}</button>
+      </div>
+      <div className="player name">{user.name}</div>
+      <div className="player id">id: {user.id}</div>
   </div>
 );
+}
 
 Player.propTypes = {
   user: PropTypes.object
@@ -79,7 +87,7 @@ const Game = () => {
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Player user={user} key={user.id}/>
+            <Player user={user} key={user.id} password={user.password}/>
           ))}
         </ul>
         <Button

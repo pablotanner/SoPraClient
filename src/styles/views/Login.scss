@@ -14,11 +14,12 @@
     justify-content: center;
     width: 60%;
     max-width: 30em;
-    height: 20em;
+    height: 23em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
     padding-right: 37px;
+    padding-bottom: 40px;
     border-radius: 0.75em;
     background-color: $background;
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -49,5 +50,15 @@
     display: flex;
     justify-content: center;
     margin-top: 2em;
+  }
+  &.register-button {
+    margin-left: 0.4em;
+    font-weight:600;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #ffffff;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }

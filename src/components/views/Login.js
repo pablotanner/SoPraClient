@@ -37,22 +37,33 @@ FormField.propTypes = {
 
 const Login = props => {
   const history = useHistory();
-  const [name, setName] = useState(null);
   const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const routeChange = () =>{
+    let path = `/register`;
+    history.push(path);
+  }
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({username, name});
-      const response = await api.post('/users', requestBody);
+      const response = await api.get('/users');
+      let userExists = false;
 
-      // Get the returned user and update a new object.
-      const user = new User(response.data);
+      response.data.forEach(user => {
+        if(user.username === username && user.password === password){
+          userExists = true;
+          // Store the token into the local storage.
+          localStorage.setItem('token', user.token);
+          localStorage.setItem('id', user.id);
+          // Login successfully worked --> navigate to the route /game in the GameRouter
+          history.push(`/game`);
 
-      // Store the token into the local storage.
-      localStorage.setItem('token', user.token);
-
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/game`);
+        }
+        });
+    if(!userExists){
+      alert("Username or password is wrong");
+    }
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -62,19 +73,24 @@ const Login = props => {
     <BaseContainer>
       <div className="login container">
         <div className="login form">
+          <h3 className="login title">Login</h3>
           <FormField
             label="Username"
             value={username}
             onChange={un => setUsername(un)}
-          />
+            />
           <FormField
-            label="Name"
-            value={name}
-            onChange={n => setName(n)}
+          label ="Password"
+          value={password}
+          onChange={pw => setPassword(pw)}
           />
+          <div> Not Registered yet?
+            <button color="primary" className="login register-button" onClick={routeChange}>Create Account</button>
+          </div>
+
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
+              disabled={!username || !password}
               width="100%"
               onClick={() => doLogin()}
             >
