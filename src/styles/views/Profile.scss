@@ -11,11 +11,10 @@
   margin: 0.15em;
   &.container {
     background: $background;
-    padding: 0em 1.5em 1.5em;
+    padding: 0em 1.5em 1.5em 1.5em;
     border-radius: $borderRadius;
     display: flex;
     flex-direction: column;
-    box-shadow: $dropShadow;
   }
   & p,h2 {
     margin: 0.1em;
@@ -41,5 +40,21 @@
 
   }
 
+  &.input {
+    height: 35px;
+    padding-left: 15px;
+    margin-left: -4px;
+    margin-bottom: 1em;
+    border: none;
+    border-radius: 0.75em;
+    background: transparentize(white, 0.85);
+    color: $textColor;
+  }
+  &.change-birthday-label {
+    margin-bottom: 0.5em;
+    margin-top: 0em;
+    text-align: center;
+    font-weight: 600;
+  }
 }
 
