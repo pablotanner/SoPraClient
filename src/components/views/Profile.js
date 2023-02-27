@@ -22,6 +22,10 @@ const UserProfile = ({user}) => {
         try {
             if(newBirthday != null){
                 const birthday = new Date();
+                if(newBirthday.length != 10){
+                    alert("Birthday has to be in the format DD.MM.YYYY");
+                    return;
+                }
                 birthday.setFullYear(newBirthday.substring(6,10));
                 birthday.setMonth(newBirthday.substring(3,5)-1);
                 birthday.setDate(newBirthday.substring(0,2));
@@ -38,7 +42,7 @@ const UserProfile = ({user}) => {
                 await api.put('/users/' + user.id, JSON.stringify({username: newUsername}));
             }
         } catch (error) {
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
+            alert(`Something went wrong during the profile updating: \n${handleError(error)}`);
         }
         window.location.reload(false);
     }
