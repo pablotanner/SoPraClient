@@ -11,11 +11,12 @@ import "styles/views/Profile.scss";
 
 const UserProfile = ({user}) => {
     const [newBirthday, setNewBirthday] = useState(null);
-    if(user.birthday == null){
-        user.birthday = "Not Set";
-    }
+
     let birthday_prettified = new Date(user.birthday).getDate() + "." + (new Date(user.birthday).getMonth() + 1) + "." + new Date(user.birthday).getFullYear();
     let creation_date_prettified = new Date(user.creation_date).getDate() + "." + (new Date(user.creation_date).getMonth() + 1) + "." + new Date(user.creation_date).getFullYear();
+    if(user.birthday == null){
+        birthday_prettified = "Not Set";
+    }
     const updateProfile = async () => {
         try {
             const birthday = new Date();
@@ -32,7 +33,7 @@ const UserProfile = ({user}) => {
     }
 
 
-    if(localStorage.getItem("token") == user.token){
+    if(localStorage.getItem("token") === user.token){
         return (
             <BaseContainer>
                 <div className="profile container">

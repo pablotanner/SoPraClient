@@ -1,9 +1,7 @@
-import {Redirect, Route, useHistory} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import Game from "components/views/Game";
 import PropTypes from 'prop-types';
 import Profile from "../../views/Profile";
-import {api} from "../../../helpers/api";
-import {useState} from "react";
 
 const GameRouter = props => {
   /**
