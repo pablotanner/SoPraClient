@@ -19,7 +19,8 @@ const FormField = props => {
         {props.label}
       </label>
       <input
-        className="login input"
+          type={props.type}
+          className="login input"
         placeholder="enter here.."
         value={props.value}
         onChange={e => props.onChange(e.target.value)}
@@ -84,10 +85,11 @@ const Login = props => {
             />
           <FormField
           label ="Password"
+          type="password"
           value={password}
           onChange={pw => setPassword(pw)}
           />
-          <div> Not Registered yet?
+          <div className="login question"> Not Registered yet?
             <button color="primary" className="login register-button" onClick={routeChange}>Create Account</button>
           </div>
 

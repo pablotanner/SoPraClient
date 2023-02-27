@@ -1,6 +1,9 @@
 @import 'styles/theme';
 
 .login {
+  &.title {
+    margin-top: 2em;
+  }
   &.container {
     margin-top: 2em;
     min-height: 300px;
@@ -50,6 +53,9 @@
     display: flex;
     justify-content: center;
     margin-top: 2em;
+  }
+  &.question {
+    margin-bottom: -1em;
   }
   &.register-button {
     margin-left: 0.4em;

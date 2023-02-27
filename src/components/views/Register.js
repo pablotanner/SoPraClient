@@ -20,6 +20,7 @@ const FormField = props => {
                 {props.label}
             </label>
             <input
+                type={props.type}
                 className="register input"
                 placeholder="enter here.."
                 value={props.value}
@@ -81,6 +82,7 @@ const Register = props => {
                     <FormField
                         label ="Password"
                         value={password}
+                        type="password"
                         onChange={pw => setPassword(pw)}
                     />
                     <FormField
@@ -88,7 +90,7 @@ const Register = props => {
                         value={name}
                         onChange={n => setName(n)}
                     />
-                    <div> Already Registered?
+                    <div className="register question"> Already Registered?
                         <button color="primary" className="register login-button" onClick={routeChange}>Login</button>
                     </div>
 

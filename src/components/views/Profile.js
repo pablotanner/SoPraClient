@@ -8,33 +8,57 @@ import PropTypes from "prop-types";
 import "styles/views/Profile.scss";
 
 
-
 const UserProfile = ({user}) => {
     const [newBirthday, setNewBirthday] = useState(null);
     const [newUsername, setNewUsername] = useState(null);
+    const [show, setShow] = useState(false);
 
     let birthday_prettified = new Date(user.birthday).getDate() + "." + (new Date(user.birthday).getMonth() + 1) + "." + new Date(user.birthday).getFullYear();
     let creation_date_prettified = new Date(user.creation_date).getDate() + "." + (new Date(user.creation_date).getMonth() + 1) + "." + new Date(user.creation_date).getFullYear();
-    if(user.birthday == null){
+    if (user.birthday == null) {
         birthday_prettified = "Not Set";
     }
+    const openProfileText = () => {
+        if (show) {
+            return "Close"
+        } else {
+            return "Edit Profile"
+        }
+    }
+    const profileWindow = ({user}) => {
+        return (
+            <div>
+                <FormField
+                    label="Change Username"
+                    value={newUsername}
+                    placeholder="enter here..."
+                    onChange={un => setNewUsername(un)}
+                />
+                <FormField
+                    label="Change Birthday"
+                    type = "date"
+                    value={newBirthday}
+                    onChange={un => setNewBirthday(un)}
+                />
+                <Button
+                    disabled={!newUsername && !newBirthday}
+                    width="100%"
+                    onClick={() => updateProfile()}
+                > Save Changes
+                </Button>
+            </div>
+        )
+    }
     const updateProfile = async () => {
+
         try {
-            if(newBirthday != null){
-                const birthday = new Date();
-                if(newBirthday.length != 10){
-                    alert("Birthday has to be in the format DD.MM.YYYY");
-                    return;
-                }
-                birthday.setFullYear(newBirthday.substring(6,10));
-                birthday.setMonth(newBirthday.substring(3,5)-1);
-                birthday.setDate(newBirthday.substring(0,2));
-                await api.put('/users/' + user.id, JSON.stringify({birthday}));
+            if (newBirthday != null) {
+                await api.put('/users/' + user.id, JSON.stringify({birthday: newBirthday}));
             }
-            if(newUsername != null){
+            if (newUsername != null && newUsername !== "") {
                 const userList = await api.get('/users');
-                for(let i = 0; i < userList.data.length; i++){
-                    if(userList.data[i].username === newUsername){
+                for (let i = 0; i < userList.data.length; i++) {
+                    if (userList.data[i].username === newUsername) {
                         alert("Username already exists");
                         return;
                     }
@@ -48,44 +72,33 @@ const UserProfile = ({user}) => {
     }
 
 
-    if(localStorage.getItem("token") === user.token){
+    if (localStorage.getItem("token") === user.token) {
         return (
             <BaseContainer>
                 <div className="profile container">
-                    <h1 className="profile title">Your Profile</h1>
+                    <h1 className="profile title">Your Profile {user.status === "ONLINE" ? "🟢" : "🔴"}</h1>
                     <div className="profile username">Username: {user.username}</div>
                     <div className="profile id">User ID: {user.id}</div>
                     <div className="profile name">Name: {user.name}</div>
                     <div className="profile status">Status: {user.status}</div>
                     <div className="profile creation-date">Creation Date: {creation_date_prettified}</div>
                     <div className="profile birthday">Birthday: {birthday_prettified}</div>
-                    <FormField
-                        label="Change Username"
-                        value={newUsername}
-                        placeholder="enter here..."
-                        onChange={un => setNewUsername(un)}
-                    />
-                    <FormField
-                        label="Change Birthday"
-                        value={newBirthday}
-                        placeholder="DD/MM/YYYY"
-                        onChange={un => setNewBirthday(un)}
-                    />
-                <Button
-                    disabled={!newBirthday && !newUsername}
-                    width="100%"
-                    onClick={() => updateProfile()}
-                    >
-                    Update Profile
-                </Button>
 
+                    <Button
+                        width="100%"
+
+                        onClick={() => setShow(!show)}
+                    >
+                        {openProfileText()}
+                    </Button>
+                    {show && profileWindow(user)}
                 </div>
             </BaseContainer>
         )
     }
     return (
         <div className="profile container">
-            <h1 className="profile title">Profile</h1>
+            <h1 className="profile title">Profile {user.status === "ONLINE" ? "🟢" : "🔴"}</h1>
             <div className="profile username">Username: {user.username}</div>
             <div className="profile id">User ID: {user.id}</div>
             <div className="profile name">Name: {user.name}</div>
@@ -99,12 +112,13 @@ const UserProfile = ({user}) => {
 
 const FormField = props => {
     return (
-        <div className="register field">
+        <div className="profile field">
             <label className="profile change-birthday-label">
                 {props.label}
             </label>
             <input
                 className="profile input"
+                type = {props.type}
                 placeholder={props.placeholder}
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
@@ -112,7 +126,6 @@ const FormField = props => {
         </div>
     );
 };
-
 
 
 const Profile = () => {
@@ -151,7 +164,7 @@ const Profile = () => {
             <div className="game container">
                 <UserProfile user={viewedUser}/>
                 <Button
-                    width="100%"
+                    width="50%"
                     onClick={() => history.push('/game')}
                 >
                     Return
@@ -159,7 +172,7 @@ const Profile = () => {
             </div>
         );
     }
-    return(
+    return (
         <BaseContainer>
             {content}
         </BaseContainer>
@@ -168,7 +181,7 @@ const Profile = () => {
 }
 
 Profile.propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
 };
 
 export default Profile;

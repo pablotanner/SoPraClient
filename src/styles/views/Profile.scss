@@ -10,8 +10,9 @@
 .profile {
   margin: 0.15em;
   &.container {
+    min-width: 400px;
     background: $background;
-    padding: 0em 1.5em 1.5em 1.5em;
+    padding: 0em 1em 1em 1em;
     border-radius: $borderRadius;
     display: flex;
     flex-direction: column;
@@ -40,11 +41,16 @@
 
   }
 
+  &.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0.5em;
+  }
   &.input {
     height: 35px;
     padding-left: 15px;
     margin-left: -4px;
-    margin-bottom: 1em;
     border: none;
     border-radius: 0.75em;
     background: transparentize(white, 0.85);
@@ -53,7 +59,7 @@
   &.change-birthday-label {
     margin-bottom: 0.5em;
     margin-top: 0em;
-    text-align: center;
+    text-align: left;
     font-weight: 600;
   }
 }
