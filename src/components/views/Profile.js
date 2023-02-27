@@ -90,7 +90,7 @@ const UserProfile = ({user}) => {
             <div className="profile birthday">Birthday: {birthday_prettified}</div>
 
         </div>
-    );;
+    );
 }
 
 const FormField = props => {
@@ -139,7 +139,7 @@ const Profile = () => {
         }
 
         fetchData();
-    }, []);
+    });
 
     let content = <Spinner/>;
     if (viewedUser) {
