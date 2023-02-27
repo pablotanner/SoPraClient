@@ -11,6 +11,7 @@ import "styles/views/Profile.scss";
 
 const UserProfile = ({user}) => {
     const [newBirthday, setNewBirthday] = useState(null);
+    const [newUsername, setNewUsername] = useState(null);
 
     let birthday_prettified = new Date(user.birthday).getDate() + "." + (new Date(user.birthday).getMonth() + 1) + "." + new Date(user.birthday).getFullYear();
     let creation_date_prettified = new Date(user.creation_date).getDate() + "." + (new Date(user.creation_date).getMonth() + 1) + "." + new Date(user.creation_date).getFullYear();
@@ -19,13 +20,23 @@ const UserProfile = ({user}) => {
     }
     const updateProfile = async () => {
         try {
-            const birthday = new Date();
-            birthday.setFullYear(newBirthday.substring(6,10));
-            birthday.setMonth(newBirthday.substring(3,5)-1);
-            birthday.setDate(newBirthday.substring(0,2));
-            const requestBody = JSON.stringify({birthday});
-            await api.put('/users/' + user.id, requestBody);
-
+            if(newBirthday != null){
+                const birthday = new Date();
+                birthday.setFullYear(newBirthday.substring(6,10));
+                birthday.setMonth(newBirthday.substring(3,5)-1);
+                birthday.setDate(newBirthday.substring(0,2));
+                await api.put('/users/' + user.id, JSON.stringify({birthday}));
+            }
+            if(newUsername != null){
+                const userList = await api.get('/users');
+                for(let i = 0; i < userList.data.length; i++){
+                    if(userList.data[i].username === newUsername){
+                        alert("Username already exists");
+                        return;
+                    }
+                }
+                await api.put('/users/' + user.id, JSON.stringify({username: newUsername}));
+            }
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
@@ -44,19 +55,26 @@ const UserProfile = ({user}) => {
                     <div className="profile status">Status: {user.status}</div>
                     <div className="profile creation-date">Creation Date: {creation_date_prettified}</div>
                     <div className="profile birthday">Birthday: {birthday_prettified}</div>
-
                     <FormField
-                        label="Birthday"
+                        label="Change Username"
+                        value={newUsername}
+                        placeholder="enter here..."
+                        onChange={un => setNewUsername(un)}
+                    />
+                    <FormField
+                        label="Change Birthday"
                         value={newBirthday}
+                        placeholder="DD/MM/YYYY"
                         onChange={un => setNewBirthday(un)}
                     />
                 <Button
-                    disabled={!newBirthday}
+                    disabled={!newBirthday && !newUsername}
                     width="100%"
                     onClick={() => updateProfile()}
                     >
                     Update Profile
                 </Button>
+
                 </div>
             </BaseContainer>
         )
@@ -79,11 +97,11 @@ const FormField = props => {
     return (
         <div className="register field">
             <label className="profile change-birthday-label">
-                Change Birthday:
+                {props.label}
             </label>
             <input
                 className="profile input"
-                placeholder="DD/MM/YYYY"
+                placeholder={props.placeholder}
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
             />
@@ -115,6 +133,7 @@ const Profile = () => {
                 console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
                 console.error("Details:", error);
                 alert("This user doesn't exist");
+                history.push('/game');
 
             }
         }

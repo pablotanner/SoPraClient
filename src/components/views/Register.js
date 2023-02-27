@@ -42,6 +42,7 @@ const Register = props => {
     const [name, setName] = useState(null);
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+    const status = "ONLINE";
 
     const routeChange = () =>{
         let path = `/login`;
@@ -53,8 +54,12 @@ const Register = props => {
             const response = await api.post('/users', requestBody);
             // Get the returned user and update a new object.
             const user = new User(response.data);
+            //Set registered user to online
+            await api.put('/users/' + user.id, JSON.stringify({status}));
             // Store the token into the local storage.
             localStorage.setItem('token', user.token);
+            localStorage.setItem('id', user.id);
+
 
             // Login successfully worked --> navigate to the route /game in the GameRouter
             history.push(`/game`);

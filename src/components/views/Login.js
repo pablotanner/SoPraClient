@@ -48,13 +48,17 @@ const Login = props => {
     try {
       const response = await api.get('/users');
       let userExists = false;
+      const status = "ONLINE";
+      const requestBody = JSON.stringify({status});
 
       response.data.forEach(user => {
         if(user.username === username && user.password === password){
           userExists = true;
           // Store the token into the local storage.
           localStorage.setItem('token', user.token);
+          localStorage.setItem('id', user.id);
           // Login successfully worked --> navigate to the route /game in the GameRouter
+          api.put('/users/' + user.id, requestBody);
           history.push(`/game`);
 
 

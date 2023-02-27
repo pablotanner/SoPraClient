@@ -28,7 +28,9 @@ Player.propTypes = {
 };
 
 const Game = () => {
-  // use react-router-dom's hook to access the history
+  const status = "OFFLINE";
+  const offlineBody = JSON.stringify({status});
+    // use react-router-dom's hook to access the history
   const history = useHistory();
 
   // define a state variable (using the state hook).
@@ -38,9 +40,18 @@ const Game = () => {
   // more information can be found under https://reactjs.org/docs/hooks-state.html
   const [users, setUsers] = useState(null);
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    history.push('/login');
+  const logout = async () => {
+      try{
+          await api.put('/users/' + localStorage.getItem('id'), offlineBody);
+      }
+      catch (error) {
+          alert(`Something went wrong while logging out: \n${handleError(error)}`);
+      }
+      finally {
+          localStorage.removeItem('token');
+          localStorage.removeItem('id');
+          history.push('/login');
+      }
   }
 
   // the effect hook can be used to react to change in your component.
