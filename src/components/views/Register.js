@@ -52,21 +52,12 @@ const Register = props => {
     const doRegister = async () => {
         try {
             const requestBody = JSON.stringify({username, name, password});
-            const response = await api.post('/users', requestBody, {
-                auth: {
-                    username: 'user',
-                    password: 'password'
-                }
-            });
+            const response = await api.post('/users', requestBody);
+
             // Get the returned user and update a new object.
             const user = new User(response.data);
             //Set registered user to online
-            await api.put('/users/' + user.id, JSON.stringify({status}), {
-                auth: {
-                    username: 'user',
-                    password: 'password'
-                }
-            });
+            await api.put('/users/' + user.id, JSON.stringify({status}));
             // Store the token into the local storage.
             localStorage.setItem('token', user.token);
             localStorage.setItem('id', user.id);

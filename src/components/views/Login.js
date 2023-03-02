@@ -47,12 +47,7 @@ const Login = props => {
 
   const doLogin = async () => {
     try {
-      const response = await api.get('/users', {
-        auth: {
-          username: 'user',
-          password: 'password'
-        }
-      });
+      const response = await api.get('/users');
       let userExists = false;
       const status = "ONLINE";
       const requestBody = JSON.stringify({status});
@@ -64,12 +59,7 @@ const Login = props => {
           localStorage.setItem('token', user.token);
           localStorage.setItem('id', user.id);
           // Login successfully worked --> navigate to the route /game in the GameRouter
-          api.put('/users/' + user.id, requestBody, {
-            auth: {
-              username: 'user',
-              password: 'password'
-            }
-          });
+          api.put('/users/' + user.id, requestBody);
           history.push(`/game`);
 
 

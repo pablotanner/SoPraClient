@@ -1,17 +1,15 @@
 import axios from 'axios';
 import { getDomain } from 'helpers/getDomain';
-
-//const USER = 'user';
-//const PASSWORD = 'password';
-//const AUTH_TOKEN = Buffer.from(`${USER}:${PASSWORD}`).toString('base64');
+const USER = 'user';
+const PASSWORD = 'password';
 
 export const api = axios.create({
   baseURL: getDomain(),
   headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
   auth: {
-    username: 'user',
-    password: 'password'
-  }
+    username: USER,
+    password: PASSWORD
+}
 });
 
 

@@ -42,12 +42,7 @@ const Game = () => {
 
   const logout = async () => {
       try{
-          await api.put('/users/' + localStorage.getItem('id'), offlineBody, {
-              auth: {
-              username: 'user',
-                  password: 'password'
-          }
-          });
+          await api.put('/users/' + localStorage.getItem('id'), offlineBody);
       }
       catch (error) {
           alert(`Something went wrong while logging out: \n${handleError(error)}`);
@@ -67,12 +62,7 @@ const Game = () => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
       try {
-        const response = await api.get('/users', {
-            auth: {
-                username: 'user',
-                password: 'password'
-            }
-        });
+        const response = await api.get('/users');
 
         // delays continuous execution of an async operation for 1 second.
         // This is just a fake async call, so that the spinner can be displayed
