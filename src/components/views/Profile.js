@@ -53,17 +53,32 @@ const UserProfile = ({user}) => {
 
         try {
             if (newBirthday != null) {
-                await api.put('/users/' + user.id, JSON.stringify({birthday: newBirthday}));
+                await api.put('/users/' + user.id, JSON.stringify({birthday: newBirthday}), {
+                    auth: {
+                        username: 'user',
+                        password: 'password'
+                    }
+                });
             }
             if (newUsername != null && newUsername !== "") {
-                const userList = await api.get('/users');
+                const userList = await api.get('/users', {
+                    auth: {
+                        username: 'user',
+                        password: 'password'
+                    }
+                });
                 for (let i = 0; i < userList.data.length; i++) {
                     if (userList.data[i].username === newUsername) {
                         alert("Username already exists");
                         return;
                     }
                 }
-                await api.put('/users/' + user.id, JSON.stringify({username: newUsername}));
+                await api.put('/users/' + user.id, JSON.stringify({username: newUsername}), {
+                    auth: {
+                        username: 'user',
+                        password: 'password'
+                    }
+                })
             }
         } catch (error) {
             alert(`Something went wrong during the profile updating: \n${handleError(error)}`);
@@ -137,7 +152,12 @@ const Profile = () => {
         async function fetchData() {
             const urlID = window.location.href.split("/").pop();
             try {
-                const response = await api.get('/users/' + urlID);
+                const response = await api.get('/users/' + urlID, {
+                    auth: {
+                        username: 'user',
+                        password: 'password'
+                    }
+                });
 
                 // delays continuous execution of an async operation for 1 second.
                 // This is just a fake async call, so that the spinner can be displayed

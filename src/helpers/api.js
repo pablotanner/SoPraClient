@@ -1,10 +1,21 @@
 import axios from 'axios';
 import { getDomain } from 'helpers/getDomain';
 
+//const USER = 'user';
+//const PASSWORD = 'password';
+//const AUTH_TOKEN = Buffer.from(`${USER}:${PASSWORD}`).toString('base64');
+
 export const api = axios.create({
   baseURL: getDomain(),
-  headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+  headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+  auth: {
+    username: 'user',
+    password: 'password'
+  }
 });
+
+
+//axios.defaults.headers.common['Authorization'] = 'Basic' + AUTH_TOKEN;
 
 export const handleError = error => {
   const response = error.response;
